@@ -36,15 +36,67 @@ const followersArray = [];
     <p class="username">{users user name}</p>
     <p>Location: {users location}</p>
     <p>Profile:  
-      <a href={address to users github page}>{address to users github page}</a>
+    <a href={address to users github page}>{address to users github page}</a>
     </p>
     <p>Followers: {users followers count}</p>
     <p>Following: {users following count}</p>
     <p>Bio: {users bio}</p>
-  </div>
-</div>
+    </div>
+    </div>
+    
+    */
+const cards = document.querySelector('.cards');
 
-*/
+axios.get('https://api.github.com/users/DenisChuvilin').then(function(response) {
+  cards.append(GhCardMaker(response.data));
+});
+
+function GhCardMaker(ghData) {
+  //create elements
+  const card = document.createElement('div');
+  const img = document.createElement('img');
+  const info = document.createElement('div');
+  const name = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profilePage = document.createElement('p');
+  const profileAddy = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  // add classes
+  card.classList.add('card');
+  info.classList.add('card-info');
+  name.classList.add('name');
+  userName.classList.add('username');
+
+  //API injections
+  img.src = ghData.avatar_url;
+  name.textContent = ghData.name;
+  userName.textContent = ghData.login;
+  location.textContent = ghData.location;
+  profileAddy.src = ghData.html_url;
+  followers.textContent = ` Followers: ${ghData.followers}`;
+  following.textContent = `Following: ${ghData.following}`;
+  bio.textContent = ghData.bio;
+  // appendages
+  card.append(img);
+  card.append(info);
+  info.append(name);
+  info.append(userName);
+  info.append(location);
+  info.append(profilePage);
+  profilePage.append(profileAddy);
+  info.append(followers);
+  info.append(following);
+  info.append(bio);
+
+  // add text content
+  location.textContent = `Location: ${ghData.location}`;
+  profilePage.textContent = `Profile: ${profileAddy}`;
+  return card;
+}
 
 /* List of LS Instructors Github username's: 
   tetondan
