@@ -24,7 +24,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['austinhuisinga', 'KrystalGuzman', 'tdefriess', 'kaverndsp', 'dmhabh1992', 'DenisChuvilin'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -46,10 +46,11 @@ const followersArray = [];
     
     */
 const cards = document.querySelector('.cards');
-
-axios.get('https://api.github.com/users/DenisChuvilin').then(function(response) {
-  cards.append(GhCardMaker(response.data));
-});
+followersArray.forEach(e =>
+  axios.get(`https://api.github.com/users/${e}`).then(function(response) {
+    cards.append(GhCardMaker(response.data));
+  })
+);
 
 function GhCardMaker(ghData) {
   //create elements
@@ -76,8 +77,8 @@ function GhCardMaker(ghData) {
   name.textContent = ghData.name;
   userName.textContent = ghData.login;
   location.textContent = ghData.location;
-  profileAddy.src = ghData.html_url;
-  followers.textContent = ` Followers: ${ghData.followers}`;
+  profileAddy.href = ghData.html_url;
+  followers.textContent = `Followers: ${ghData.followers}`;
   following.textContent = `Following: ${ghData.following}`;
   bio.textContent = ghData.bio;
   // appendages
@@ -93,8 +94,11 @@ function GhCardMaker(ghData) {
   info.append(bio);
 
   // add text content
-  location.textContent = `Location: ${ghData.location}`;
+  location.textContent === ''
+    ? (location.textContent = 'Location: Buckingham Palace, London, UK')
+    : (location.textContent = `Location: ${ghData.location}`);
   profilePage.textContent = `Profile: ${profileAddy}`;
+
   return card;
 }
 
