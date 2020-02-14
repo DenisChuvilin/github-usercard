@@ -24,7 +24,7 @@ axios.get('https://api.github.com/users/DenisChuvilin').then(r => console.log(r)
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['DenisChuvilin', 'erikshestopal', 'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,40 +45,59 @@ const followersArray = [];
 </div>
 
 */
+
+//capture the .cards class
+const cards = document.querySelector('.cards');
+// create cards from followersArray using myFollowers function with github api and appending them to the ".cards" class.
+followersArray.map(name =>
+  axios.get(`https://api.github.com/users/${name}`).then(response => {
+    cards.append(myFollowers(response));
+  })
+);
+
 function myFollowers(follower) {
-  const //create elements
-    card = document.createElement('div');
-    userImg = document.createElement('img');
-    cardInfo = document.createElement('div');
-    name = document.createElement('h3');
-    userName = document.createElement('p');
-    location = document.createElement('p');
-    profile = document.createElement('p');
-    link = document.createElement('a');
-    followers = document.createElement('p');
-    following = document.createElement('p');
-    bio = document.createElement('p');
+  //create elements
+  const card = document.createElement('div');
+  const userImg = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const link = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
   // add classes
   card.classList.add('card');
   cardInfo.classList.add('card-info');
   name.classList.add('name');
   userName.classList.add('username');
   // add src attributes
-  userImg.src = follower.data.avatar_url
-  link.src = follower.data.url
+  userImg.src = follower.data.avatar_url;
+  link.src = follower.data.url;
   // add textcontent
-  name.textContent = follower.data.name
-  userName.textContent = follower.data.login
-  location.textContent = follower.data.location
-  link.textContent = follower.data.url
-  followers.textContent = follower.data.followers
-  following.textContent = follower.data.following
-  bio.textContent = follower.data.bio
+  name.textContent = follower.data.name;
+  userName.textContent = follower.data.login;
+  location.textContent = follower.data.location;
+  link.textContent = follower.data.url;
+  followers.textContent = `Followers: ${follower.data.followers}`;
+  following.textContent = `Following: ${follower.data.following}`;
+  bio.textContent = follower.data.bio;
+  profile.textContent = `Profile: ${link}`;
   // append
-card.append(userImg, cardInfo);
-cardInfo.append(name, userName, location, profile, followers, following, bio)
-
-
+  card.append(userImg);
+  card.append(cardInfo);
+  cardInfo.append(name);
+  cardInfo.append(userName);
+  cardInfo.append(location);
+  cardInfo.append(profile);
+  cardInfo.append(followers);
+  cardInfo.append(following);
+  cardInfo.append(bio);
+  profile.append(link);
+  //return card
+  return card;
 }
 /* List of LS Instructors Github username's: 
   tetondan
