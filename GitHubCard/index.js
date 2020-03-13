@@ -92,44 +92,16 @@ const CardCreator = (inputName) => {
 // capture cards component
 cards = document.querySelector('.cards')
 
-
-followersArray.forEach(person => axios.get(`https://api.github.com/users/${person}`)
-  .then(response => cards.append(CardCreator(response.data)))
-);
-
-
-/*
-function getUserAccount() {
-  return axios.get('/user/12345');
-}
-
-function getUserPermissions() {
-  return axios.get('/user/12345/permissions');
-}
-
-axios.all([getUserAccount(), getUserPermissions()])
-  .then(axios.spread(function (acct, perms) {
-    // Both requests are now complete
-  }));
-*/
-
+// flex function
 function getFollowers(userName){
-return axios.get(`https://api.github.com/users/${userName}/followers`)
-  .then(response => {return response.data})
-}
-
-// function postFollowers(follower){
-//  return  axios.get(`https://api.github.com/users/${follower}`)
-// }
-
-// axios.all([getFollowers('DenisChuvilin'),postFollowers()])
-// .then(axios.spread(function (userName,followerName){
-// userName.data.forEach(follower => { postFollowers(follower)
-//   // followerName = follower.login
-//   console.log(followerName)
-// }
-// )}))
-
+ axios.get(`https://api.github.com/users/${userName}/followers`)
+  .then(response => {
+    response.data.forEach( follower => 
+      axios
+      .get(`https://api.github.com/users/${follower.login}`)
+      .then(response => cards.append(CardCreator(response.data))))})
+  }
+getFollowers('DenisChuvilin');
 /* List of LS Instructors Github username's:
   tetondan
   dustinmyers
